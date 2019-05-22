@@ -47,7 +47,7 @@ const Player = () => (
                         railsStyle={{ background: '#404040', borderRadius: 10 }}
                         trackStyle={{ background: '#11d760' }}
                         handleStyle={{ border: 0 }}
-                        value={100}
+
                     />
                 </ProgressSlider>
                 <span>10:39</span>

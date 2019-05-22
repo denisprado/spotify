@@ -7,6 +7,7 @@
     "express": "^4.17.0",
     "express-favicon": "^2.0.1",
     "font-awesome": "^4.7.0",
+    "json-server": "^0.15.0",
     "mapbox-gl": "^0.54.0",
     "prop-types": "^15.7.2",
     "rc-slider": "^8.6.11",
@@ -29,7 +30,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "json-server server.json -p 3001 -w -d 500"
   },
   "eslintConfig": {
     "extends": "react-app"
