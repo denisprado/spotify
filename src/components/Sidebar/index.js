@@ -1,63 +1,100 @@
-import React from "react"
+import React, { Component } from "react"
+import { Link } from 'react-router-dom'
 import { Container, NewPlayList, Nav } from './styles'
 import AddPlaylistIcon from '../../assets/images/add_playlist.svg'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Creators as PlaylistsActions } from '../../store/ducks/playlists'
 
-const Sidebar = () => (
-    <Container>
-        <div>
-            <Nav main>
-                <li>
-                    <a href="#">Navegar</a>
-                </li>
-                <li>
-                    <a href="#">Radio</a>
-                </li>
-            </Nav>
-            <Nav>
-                <li>
-                    <span>SUA BIBLIOTECA</span>
-                </li>
-                <li>
-                    <a href="#">Seu daily mix</a>
-                </li>
-                <li>
-                    <a href="#">Tocados recentemente</a>
-                </li>
-                <li>
-                    <a href="#">Albúns</a>
-                </li>
-                <li>
-                    <a href="#">Artistas</a>
-                </li>
-                <li>
-                    <a href="#">Estações</a>
-                </li>
-                <li>
-                    <a href="#">Arquivos locais</a>
-                </li>
-                <li>
-                    <a href="#">Videos</a>
-                </li>
-                <li>
-                    <a href="#">Podcasts</a>
-                </li>
-            </Nav>
-            <Nav >
-                <li><span>PLAYLISTS</span></li>
-                <li>
-                    <a href="#">playlist #1</a>
-                </li>
-                <li>
-                    <a href="#">playlist #2</a>
-                </li>
-            </Nav>
-        </div>
-        <NewPlayList>
-            <img src={AddPlaylistIcon} alt="Adicionar Playlist" />
-            Nova PLaylist
-        </NewPlayList>
-    </Container>
-)
+import PropTypes from 'prop-types'
 
-export default Sidebar;
+import Loading from '../../components/Loading'
+
+class Sidebar extends Component {
+
+    static propTypes = {
+        getPlaylistsRequest: PropTypes.func.isRequired,
+        playlists: PropTypes.shape({
+            data: PropTypes.arrayOf(PropTypes.shape({
+                id: PropTypes.number,
+                title: PropTypes.string
+            })),
+            loading: PropTypes.bool,
+        }).isRequired
+    }
+
+    componentDidMount() {
+        this.props.getPlaylistsRequest()
+    }
+
+    render() {
+        return (
+            <Container>
+                <div>
+                    <Nav main>
+                        <li>
+                            <Link to="/">Navegar</Link>
+                        </li>
+                        <li>
+                            <a href="#teste">Radio</a>
+                        </li>
+                    </Nav>
+                    <Nav>
+                        <li>
+                            <span>SUA BIBLIOTECA</span>
+                        </li>
+                        <li>
+                            <a href="#teste">Seu daily mix</a>
+                        </li>
+                        <li>
+                            <a href="#teste">Tocados recentemente</a>
+                        </li>
+                        <li>
+                            <a href="#teste">Albúns</a>
+                        </li>
+                        <li>
+                            <a href="#teste">Artistas</a>
+                        </li>
+                        <li>
+                            <a href="#teste">Estações</a>
+                        </li>
+                        <li>
+                            <a href="#teste">Arquivos locais</a>
+                        </li>
+                        <li>
+                            <a href="#teste">Videos</a>
+                        </li>
+                        <li>
+                            <a href="#teste">Podcasts</a>
+                        </li>
+                    </Nav>
+                    <Nav >
+                        <li>
+                            <span>PLAYLISTS</span>
+                            {this.props.playlists.loading && <Loading />}
+                        </li>
+                        {this.props.playlists.data.map(playlist => (
+                            <li key={playlist.id}>
+                                <Link to={`/playlists/${playlist.id}`}>{playlist.title}</Link>
+                            </li>
+                        ))}
+                    </Nav>
+                </div>
+                <NewPlayList>
+                    <img src={AddPlaylistIcon} alt="Adicionar Playlist" />
+                    Nova PLaylist
+                </NewPlayList>
+            </Container>
+        )
+    }
+}
+
+const mapStateToProps = state => ({
+    playlists: state.playlists
+});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(PlaylistsActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

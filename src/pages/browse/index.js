@@ -1,33 +1,59 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Creators as PlaylistsActions } from '../../store/ducks/playlists'
 
 import { Container, Title, Playlist, List } from './styles.js'
 
-const Browse = () => (
-    <Container><Title>Navegar</Title>
+import Loading from '../../components/Loading'
 
-        <List>
-            <Playlist to="/playlists/1">
-                <img src="https://www.billboard.com/files/styles/900_wide/public/media/Pink-Floyd-Dark-Side-of-the-Moon-2017-billboard-1240.jpg" alt="play list" />
-                <strong>Melhores Rocks</strong>
-                <p>Blab bla alsbla lajsbdlasbdlajsdblas lasjhda  nalsjdbalsjdbnb  asjldbaljdba</p>
-            </Playlist>
-            <Playlist to="/playlists/1">
-                <img src="https://www.billboard.com/files/styles/900_wide/public/media/Pink-Floyd-Dark-Side-of-the-Moon-2017-billboard-1240.jpg" alt="play list" />
-                <strong>Melhores Rocks</strong>
-                <p>Blab bla alsbla lajsbdlasbdlajsdblas lasjhda  nalsjdbalsjdbnb  asjldbaljdba</p>
-            </Playlist>
-            <Playlist to="/playlists/1">
-                <img src="https://www.billboard.com/files/styles/900_wide/public/media/Pink-Floyd-Dark-Side-of-the-Moon-2017-billboard-1240.jpg" alt="play list" />
-                <strong>Melhores Rocks</strong>
-                <p>Blab bla alsbla lajsbdlasbdlajsdblas lasjhda  nalsjdbalsjdbnb  asjldbaljdba</p>
-            </Playlist>
-            <Playlist to="/playlists/1">
-                <img src="https://www.billboard.com/files/styles/900_wide/public/media/Pink-Floyd-Dark-Side-of-the-Moon-2017-billboard-1240.jpg" alt="play list" />
-                <strong>Melhores Rocks</strong>
-                <p>Blab bla alsbla lajsbdlasbdlajsdblas lasjhda  nalsjdbalsjdbnb  asjldbaljdba</p>
-            </Playlist>
-        </List>
-    </Container>
-)
+class Browse extends Component {
 
-export default Browse
+    static propTypes = {
+        getPlaylistsRequest: PropTypes.func.isRequired,
+        playlists: PropTypes.shape({
+            data: PropTypes.arrayOf(PropTypes.shape({
+                id: PropTypes.number,
+                title: PropTypes.string,
+                description: PropTypes.string,
+                thumbnail: PropTypes.string,
+            })),
+            loading: PropTypes.bool,
+        }).isRequired
+    }
+
+    componentDidMount() {
+        this.props.getPlaylistsRequest()
+    }
+
+    render() {
+        return (
+
+            <Container>
+                <Title>Navegar {this.props.playlists.loading && <Loading />}</Title>
+
+                <List>
+                    {this.props.playlists.data.map(playlist => (
+                        <Playlist key={playlist.id} to={`/playlists/${playlist.id}`} >
+                            <img src={playlist.thumbnail} alt={playlist.title} />
+                            <strong>{playlist.title}</strong>
+                            <p>{playlist.description}</p>
+                        </Playlist>
+                    ))
+                    }
+
+                </List>
+            </Container>
+        )
+    }
+}
+
+const mapStateToProps = state => ({
+    playlists: state.playlists
+});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(PlaylistsActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Browse);
