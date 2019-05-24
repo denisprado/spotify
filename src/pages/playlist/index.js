@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, Header, Songlist } from './styles';
@@ -11,8 +11,39 @@ import Loading from '../../components/Loading';
 import { Creators as PlaylistDetailsActions } from '../../store/ducks/playlistDetails';
 
 class Playlist extends Component {
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.number,
+      }),
+    }).isRequired,
+    getPlaylistDetailsRequest: PropTypes.func.isRequired,
+    playlistDetails: PropTypes.shape({
+      data: PropTypes.shape({
+        thumbnail: PropTypes.string,
+        description: PropTypes.string,
+        songs: PropTypes.arrayOf(
+          PropTypes.shape({
+            id: PropTypes.number,
+            title: PropTypes.string,
+            author: PropTypes.string,
+            album: PropTypes.string,
+          }),
+        ),
+      }),
+      loading: PropTypes.bool,
+    }).isRequired,
+  };
+
   componentDidMount() {
     this.loadPlaylistDetails();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { id } = this.props.match.params;
+    if (prevProps.match.params.id !== id) {
+      this.loadPlaylistDetails();
+    }
   }
 
   loadPlaylistDetails = () => {

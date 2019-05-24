@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { Link } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
+import { Creators as PlaylistsActions } from '../../store/ducks/playlists';
+
 import { Container, NewPlayList, Nav } from './styles';
 import AddPlaylistIcon from '../../assets/images/add_playlist.svg';
-
-import { Creators as PlaylistsActions } from '../../store/ducks/playlists';
 
 import Loading from '../Loading';
 

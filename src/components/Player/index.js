@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from 'rc-slider';
-
+import Sound from 'react-sound';
 import {
   Container, Current, Volume, Progress, Controls, Time, ProgressSlider,
 } from './styles';
@@ -14,6 +14,7 @@ import RepeatIcon from '../../assets/images/repeat.svg';
 
 const Player = () => (
   <Container>
+    {/* <Sound url="" /> */}
     <Current>
       <img
         src="https://www.billboard.com/files/styles/900_wide/public/media/Pink-Floyd-Dark-Side-of-the-Moon-2017-billboard-1240.jpg"
