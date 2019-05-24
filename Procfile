@@ -1,1 +1,1 @@
-start: "node server.js"
+start: "yarn start && yarn server"
