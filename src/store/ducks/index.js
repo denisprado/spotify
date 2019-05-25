@@ -9,7 +9,7 @@ const reducers = combineReducers({
   playlists,
   playlistDetails,
   error,
-  player
+  player,
 });
 
 export default reducers;

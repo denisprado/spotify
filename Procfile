@@ -1,1 +1,1 @@
-start: "node server.js && json-server server.json"
+start: "node server.js"
